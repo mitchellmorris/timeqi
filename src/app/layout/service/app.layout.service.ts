@@ -1,4 +1,5 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, effect, signal } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type MenuMode =
@@ -63,7 +64,9 @@ export class LayoutService {
     configUpdate$ = this.configUpdate.asObservable();
 
     overlayOpen$ = this.overlayOpen.asObservable();
-    constructor() {
+    constructor(
+		@Inject(DOCUMENT) private document: Document
+	) {
         effect(() => {
             const config = this.config();
             if (this.updateStyle(config)) {
@@ -84,7 +87,7 @@ export class LayoutService {
     changeTheme() {
         const config = this.config();
         const themeLink = <HTMLLinkElement>(
-            document.getElementById('theme-link')
+            this.document.getElementById('theme-link')
         );
         const themeLinkHref = themeLink.getAttribute('href')!;
         const newHref = themeLinkHref
@@ -103,7 +106,7 @@ export class LayoutService {
 
     replaceThemeLink(href: string) {
         const id = 'theme-link';
-        let themeLink = <HTMLLinkElement>document.getElementById(id);
+        let themeLink = <HTMLLinkElement>this.document.getElementById(id);
         const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
 
         cloneLinkElement.setAttribute('href', href);
@@ -120,7 +123,7 @@ export class LayoutService {
     }
 
     changeScale(value: number) {
-        document.documentElement.style.fontSize = `${value}px`;
+        this.document.documentElement.style.fontSize = `${value}px`;
     }
 
     onMenuToggle() {
@@ -162,7 +165,11 @@ export class LayoutService {
     }
 
     isDesktop() {
-        return window.innerWidth > 991;
+		if (typeof window !== 'undefined') {
+			return window.innerWidth > 991;
+		} else {
+			return false;
+		}
     }
 
     isSlim() {

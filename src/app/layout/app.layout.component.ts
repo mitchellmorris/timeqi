@@ -1,10 +1,11 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { MenuService } from './app.menu.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopbarComponent } from './app.topbar.component';
 import { LayoutService } from './service/app.layout.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
     selector: 'app-layout',
@@ -22,7 +23,13 @@ export class AppLayoutComponent implements OnDestroy {
 
     @ViewChild(AppTopbarComponent) appTopbar!: AppTopbarComponent;
 
-    constructor(private menuService: MenuService, public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
+    constructor(
+		private menuService: MenuService, 
+		@Inject(DOCUMENT) private document: Document,
+		public layoutService: LayoutService,
+		public renderer: Renderer2, 
+		public router: Router
+	) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', (event) => {
@@ -56,20 +63,20 @@ export class AppLayoutComponent implements OnDestroy {
     }
 
     blockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.add('blocked-scroll');
+        if (this.document.body.classList) {
+            this.document.body.classList.add('blocked-scroll');
         }
         else {
-            document.body.className += ' blocked-scroll';
+            this.document.body.className += ' blocked-scroll';
         }
     }
 
     unblockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.remove('blocked-scroll');
+        if (this.document.body.classList) {
+            this.document.body.classList.remove('blocked-scroll');
         }
         else {
-            document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
+            this.document.body.className = this.document.body.className.replace(new RegExp('(^|\\b)' +
                 'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
         }
     }
