@@ -40,7 +40,7 @@ export class LayoutService {
         ripple: false,
         menuMode: 'static',
         colorScheme: 'dark',
-        theme: 'magenta',
+        theme: 'green',
         scale: 14,
     };
 
