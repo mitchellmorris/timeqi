@@ -7,7 +7,8 @@ export const routes: Routes = [
 	{
 		path: '', component: AppLayoutComponent, children: [
 			{ path: '', component: LandingComponent },
-			{ path: 'current-list', component: CurrentListComponent }
+			// { path: 'current-list', component: CurrentListComponent },
+			{ path: 'tasklist', data: { breadcrumb: 'Task List' }, loadChildren: () => import('./tasklist/tasklist.app.module').then(m => m.TaskListAppModule) },
 		]
 	}
 ];

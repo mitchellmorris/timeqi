@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Current Task List',
                         icon: 'pi pi-fw pi-table',
-                        routerLink: ['/current-list']
+                        routerLink: ['/tasklist']
                     }
 				]
 			}
