@@ -16,9 +16,14 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-star-fill',
                 items: [
                     {
+                        label: 'Dashboard',
+                        icon: 'pi pi-fw pi-table',
+                        routerLink: ['/']
+                    },
+                    {
                         label: 'Current Task List',
                         icon: 'pi pi-fw pi-table',
-                        routerLink: ['/uikit/table']
+                        routerLink: ['/current-list']
                     }
 				]
 			}
